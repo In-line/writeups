@@ -1,0 +1,2 @@
+prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0)  = 0
+prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, {len=12, filter=0xffc8703c}) = 0

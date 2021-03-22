@@ -1,0 +1,8 @@
+#!/bin/python
+t = input()
+for i in range(0, len(t), 4):
+    result = t[i:i+4][::-1].encode('ascii')
+    hex_result = ''
+    for character in result:
+        hex_result += (hex(character)[2:])
+    print('push 0x' + hex_result)

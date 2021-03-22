@@ -1,0 +1,38 @@
+void eval(InitPool *init_pool,char operator)
+
+{
+  int local_EAX_11;
+
+int get_expr(char *buffer,size_t maxLen)
+
+{
+  ssize_t numberOfBytesRead;
+  char currentCharacter;
+  int i;
+
+
+  bool iVar1;
+  int charactersRead;
+  int in_GS_OFFSET;
+  InitPool pool;
+  char buffer [1024];
+  int local_10;
+  int canary;
+
+  char *currentNumberString;
+  int isNotZero;
+  int returnValue;
+  int currentNumber;
+  char *lengthOfCurrentNumberString;
+  int in_GS_OFFSET;
+  char *currentBufferPosPtr;
+  int i;
+  int operatorIndex;
+  char currentBuffer [100];
+  int canary;
+  int canary2;
+  size_t numberInsertIndex;
+  
+  canary2 = *(int *)(in_GS_OFFSET + 0x14);
+  currentBufferPosPtr = buffer;
+  operatorIndex = 0;
